@@ -20,10 +20,7 @@ export default class FormikSelect extends Component {
         <Field name={name}>
           {({ field, form: { touched, errors }, meta }) =>
             (
-            <Picker style={style.select} selectedValue={this.state.default} onValueChange={itemValue => {
-              this.setState({default: "default"})
-              setFieldValue(name, itemValue);
-            }}>
+            <Picker style={style.select} selectedValue={field.value} onValueChange={itemValue => setFieldValue(name, itemValue)}>
               { options.map(
                   (option, index) => <Picker.Item key={index} style={style.input} label={option.label} value={option.value} />) }
             </Picker>

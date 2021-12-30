@@ -6,10 +6,10 @@ import { RadioButton } from 'react-native-paper';
 
 class FormikRadio extends React.Component {
   render() {
-    const { label, name, suggest, choices, handleChange, handleBlur } = this.props
+    const { name, suggest, choices, handleChange, handleBlur } = this.props
     return (
       <View style={style.container}>
-        <Field type="radio" name={name}>
+        <Field name={name}>
           {({ field, form: { touched, errors }, meta }) =>
             (<View>
                 <RadioButton.Group onValueChange={handleChange(name)} value={field.value}>

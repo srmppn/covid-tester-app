@@ -4,8 +4,10 @@ import FormikSelect from '../components/formik/FormikSelect';
 import { StyleSheet, Text, View, Button, Image, AppRegistry } from 'react-native';
 import Colors from '../components/common-style/Colors';
 import Logo from "../../assets/logo.png";
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Formik } from 'formik';
+import axios from "axios"
+import qs from "querystring"
 
 class UserPage extends Component {
 
@@ -14,8 +16,8 @@ class UserPage extends Component {
         this.state = {
             branchOptions: [
             { label: "-- เลือกหน่วยบริการ --", value: "default" },
-            { label: "test1", value: "test1" },
-            { label: "test2", value: "test2" }
+            { label: "หน่วยที่ 1", value: "branch1" },
+            { label: "หน่วยที่ 2", value: "branch2" }
           ]
         }
     }
@@ -31,22 +33,23 @@ class UserPage extends Component {
                 <Text style={styles.title}>โรงพยาบาลสมเด็จพระปิ่นเกล้า กรมแพทย์ทหารเรือ</Text>
             </View>
             <View style={styles.form}>
-                <Formik initialValues={{prefix: "", firstname: "", lastname: "", phone: "", branch: ""}}>
+                <Formik 
+                  initialValues={{prefix: "", firstname: "", lastname: "", phone: "", branch: ""}}
+                  onSubmit={this.submitHandler}>
                     {({ handleChange, handleBlur, handleSubmit, setFieldValue, values }) => (
                     <View>
-                      {console.log("value ", values)}
                         <FormikField name="prefix" placeholder="คำนำหน้า" handleChange={handleChange} handleBlur={handleBlur}/>
                         <FormikField name="firstname" placeholder="ชื่อจริง" handleChange={handleChange} handleBlur={handleBlur}/>
                         <FormikField name="lastname" placeholder="นามสกุล" handleChange={handleChange} handleBlur={handleBlur}/>
                         <FormikField name="phone" placeholder="เบอร์โทรศัพท์" handleChange={handleChange} handleBlur={handleBlur}/>
                         <FormikSelect name="branch" options={this.state.branchOptions} setFieldValue={setFieldValue} />
-                        <Button title="ดำเนินการต่อ" onPress={() => this.props.navigate("/covid-test")} style={styles.button}/>
+                        <Button title="ดำเนินการต่อ" onPress={() => this.props.navigate("/covid-test", {state: values})} style={styles.button}/>
                     </View>
                     )}
                 </Formik>
             </View>
         </View>
-        );
+      );
     }
 }
 
@@ -85,9 +88,10 @@ const styles = StyleSheet.create({
     }
 });
 
-function WithNavigate(props) {
+function WithRouter(props) {
   let navigate = useNavigate()
-  return <UserPage {...props} navigate={navigate}/>
+  let location = useLocation()
+  return <UserPage {...props} navigate={navigate} location={location}/>
 }
 
-export default WithNavigate;
+export default WithRouter;
