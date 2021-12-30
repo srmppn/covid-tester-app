@@ -12,7 +12,8 @@ class TesterPage extends Component {
                 {question: "ทดสอบทดสอบทดสอบทดสอบ", result: null},
                 {question: "ทดสอบทดสอบทดสอบทดสอบ", result: null},
                 {question: "ทดสอบทดสอบทดสอบทดสอบ", result: null}
-            ]
+            ],
+            choices: [{label: "ใช่", value: "true"}, {label: "ไม่ใช่", value: "false"}]
         }
     }
 
@@ -38,8 +39,7 @@ class TesterPage extends Component {
                             .map(({question}, index) =>
                                 <View>
                                     <Text style={style.question}>{`${index+1}. ${question}`}</Text>
-                                    <FormikRadio name={`covid-test-${index+1}`} label="ใช่" handleChange={handleChange}/>
-                                    <FormikRadio name={`covid-test-${index+1}`} label="ไม่ใช่" handleChange={handleChange}/>
+                                    <FormikRadio name={`covid-test-${index+1}`} choices={this.state.choices} handleChange={handleChange}/>
                                 </View>
                             )
                         }
@@ -53,9 +53,7 @@ const style = StyleSheet.create({
     container: {
       flex: 1,
       padding: 20,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
+      backgroundColor: '#fff'
     }
 })
 

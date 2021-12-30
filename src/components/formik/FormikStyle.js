@@ -18,5 +18,10 @@ export const FormikStyle = StyleSheet.create({
       borderRadius: 3,
       width: 230,
       fontSize: 14
+    },
+    radio: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center"
     }
 })
