@@ -6,8 +6,6 @@ import Colors from '../components/common-style/Colors';
 import Logo from "../../assets/logo.png";
 import { useLocation, useNavigate } from "react-router-dom"
 import { Formik } from 'formik';
-import axios from "axios"
-import qs from "querystring"
 
 class UserPage extends Component {
 

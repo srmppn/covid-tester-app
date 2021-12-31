@@ -13,9 +13,9 @@ export default class ApplicationRouter extends React.Component {
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/user-info" element={<UserPage />} />
+            {/* <Route path="/user-info" element={<UserPage />} />
             <Route path="/covid-test" element={<TesterPage />} />
-            <Route path="/covid-result" element={<ResultPage />} />
+            <Route path="/covid-result" element={<ResultPage />} /> */}
           </Routes>
         </Router>
       )

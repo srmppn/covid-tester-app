@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native-web';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import Colors from '../components/common-style/Colors';
+
+const feedbackForm = {
+    URL: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSe6KFh5sz3RlzxuAOuOEUYzkcgwva6OJjpr-IuBvoifYnFWcQ/formResponse"
+}
 
 class ResultPage extends Component {
 
     constructor(){
         super();
+        this.state = {
+            score: -1
+        }
     }
 
     passedComponent = (hasAppointment) => {
@@ -28,6 +35,58 @@ class ResultPage extends Component {
         </View>
     }
 
+    
+    feedbackComponent = () => {
+        const feedbackChoices = [
+            {name: "frown-open", color: Colors.customRed, score: 0},
+            {name: "frown", color: Colors.customOrange, score: 1},
+            {name: "meh", color: Colors.customYellow,score: 2},
+            {name: "smile", color: Colors.customGreen, score: 3},
+            {name: "smile-wink", color: Colors.customDarkGreen, score: 4}
+        ]
+        const selectedStyle = {
+            ...style.feedBackIcon,
+            fontSize: 60
+        }
+        return <View style={style.feedbackContainer}>
+            <Text>ประเมินความพึงพอใจของท่านในการใช้งาน application</Text>
+            <View style={style.feedbackIconContainer}>
+                {
+                    feedbackChoices
+                        .map(({name, color,score}) =>
+                            {
+                                return <Icon 
+                                    style={score == this.state.score ? selectedStyle : style.feedBackIcon} 
+                                    name={name} 
+                                    color={color}
+                                    onPress={() => this.setState({score: score})}
+                                    solid/>
+                            }
+                        )
+                }
+            </View>
+            <Button title="ยืนยัน" onPress={() => this.sendFeedback(this.state.score)}/>
+        </View>
+    }
+
+    sendFeedback = (score) => {
+        const params = {
+          "entry.150406700": score
+        }
+        fetch(feedbackForm.URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(params).toString()
+        })
+        .then(r => {
+            Alert.alert("ขอบคุณ", "ประเมินผลเรียบร้อยแล้ว", { text: "ปิดหน้าต่างนี้", onPress: () => {} })
+        })
+        .catch(e => console.log(e))
+    }
+
     render() {
         const { state: {passed, hasAppointment} } = this.props.location
         return (
@@ -40,6 +99,7 @@ class ResultPage extends Component {
                             this.passedComponent(hasAppointment)
                     }
                 </View>
+                {this.feedbackComponent()}
             </View>
         );
     }
@@ -79,7 +139,24 @@ const style = StyleSheet.create({
     iconDanger: {
       fontSize: 60,
       color: Colors.warning
-    }
+    },   
+    feedbackContainer: {
+        marginTop: 30,
+        width: 200
+      },
+      feedbackIconContainer: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 20,
+        marginBottom: 10
+      },
+      feedBackIcon: {
+        fontSize: 30,
+        marginLeft: 5,
+        marginRight: 5
+      }
 });
 
 function WithRouter(props) {

@@ -1,14 +1,13 @@
 import { Formik } from 'formik';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Text, Button, Image } from 'react-native-web';
+import { View, Text, Button, Image } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Colors from '../components/common-style/Colors';
 import Logo from "../../assets/logo.png";
 import FormikRadio from '../components/formik/FormikRadio';
-import qs from "querystring";
 
-const form = {
+const covidTestForm = {
     URL: "https://docs.google.com/forms/u/0/d/e/1FAIpQLScJRlNftFZhJb8qptgvgJwSnNBD-hdCE49DBPI0bW11bMT0sw/formResponse"
 }
 
@@ -52,14 +51,13 @@ class TesterPage extends Component {
           "entry.1265149401": state.branch,
           "entry.1618681556": (passed ? "ผ่าน": "ไม่ผ่าน")
         }
-
-        fetch(form.URL, {
+        fetch(covidTestForm.URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: qs.stringify(params)
+            body: new URLSearchParams(params).toString()
         })
         .then(r => {
             this.props.navigate(
@@ -73,7 +71,7 @@ class TesterPage extends Component {
             )
         })
         .catch(e => console.log(e))
-      }
+    }
 
     render() {
         return (
